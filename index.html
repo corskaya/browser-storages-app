@@ -14,6 +14,7 @@
   <div>
     <input type="text" id="key" placeholder="Key">
     <input type="text" id="value" placeholder="Value">
+    <label for=""></label>
     <select name="storages" id="storages">
       <option value="local-storage">Local Storage</option>
       <option value="session-storage">Session Storage</option>
@@ -21,8 +22,10 @@
       <option value="indexeddb">IndexedDB</option>
       <option value="websql">WebSQL</option>
     </select>
+    <span id="expire-input"></span>
     <button id="btn-add">Add</button>
   </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/3.0.1/js.cookie.min.js"></script>
 </body>
 
 </html>
