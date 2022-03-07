@@ -1,8 +1,10 @@
-const key = document.querySelector('#key')
+const addKey = document.querySelector('#add-key')
+const deleteKey = document.querySelector('#delete-key')
 const value = document.querySelector('#value')
 const storages = document.querySelector('#storages')
 const btnAdd = document.querySelector('#btn-add')
-const span = document.querySelector('#expire-input')
+const btnDelete = document.querySelector('#btn-delete')
+const span = document.querySelector('#custom-element-area')
 
 storages.value = 'local-storage'
 
@@ -15,32 +17,43 @@ storages.addEventListener('change', () => {
 })
 
 btnAdd.addEventListener('click', () => {
-  const storagesValue = storages.value
-  const keyValue = key.value
-  const valueValue = value.value
+  if (addKey.value === '' || value.value === '') return
 
-  if (keyValue === '' || valueValue === '') return
-
-  if (storagesValue === 'local-storage') {
-    localStorage.setItem(keyValue, valueValue)
-  } else if (storagesValue === 'session-storage') {
-    sessionStorage.setItem(keyValue, valueValue)
-  } else if (storagesValue === 'cookie-storage') {
+  if (storages.value === 'local-storage') {
+    localStorage.setItem(addKey.value, value.value)
+  } else if (storages.value === 'session-storage') {
+    sessionStorage.setItem(addKey.value, value.value)
+  } else if (storages.value === 'cookie-storage') {
     addCookie()
   }
 
   resetInput()
 })
 
+btnDelete.addEventListener('click', () => {
+  if (storages.value === 'local-storage') {
+    localStorage.removeItem(deleteKey.value)
+  } else if (storages.value === 'session-storage') {
+    sessionStorage.removeItem(deleteKey.value)
+  } else if (storages.value === 'cookie-storage') {
+    removeCookie()
+  }
+
+  resetInput()
+})
+
 const resetInput = () => {
-  key.value = ''
+  addKey.value = ''
   value.value = ''
+  deleteKey.value = ''
 }
 
+// Removes custom elements
 const renderDefaults = () => {
   span.innerHTML = ''
 }
 
+// Renders custom elements for cookie
 const renderCookieElements = () => {
   const labelForExpiration = document.createElement('label')
   labelForExpiration.textContent = 'Expiration date: '
@@ -56,7 +69,13 @@ const renderCookieElements = () => {
 const addCookie = () => {
   const expirationDate = document.querySelector('#expiration').value
   const expirationDateArray = expirationDate.split('-')
-  Cookies.set(key.value, value.value, {
+  // via js-cookie library
+  Cookies.set(addKey.value, value.value, {
     expires: new Date(expirationDateArray[0], expirationDateArray[1] - 1, expirationDateArray[2], 3)
   })
+}
+
+const removeCookie = () => {
+  // via js-cookie library
+  Cookies.remove(deleteKey.value)
 }
