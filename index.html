@@ -5,43 +5,14 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <script src="script.js" defer></script>
+  <script src="index.js" defer></script>
   <title>Storage App</title>
 </head>
 
 <body>
-  <div id="add-update-area">
-    <div>Add / Update</div>
-    <div>
-      <input type="text" id="add-key" placeholder="Key">
-      <input type="text" id="value" placeholder="Value">
-      <select name="storages" id="storages">
-        <option value="local-storage">Local Storage</option>
-        <option value="session-storage">Session Storage</option>
-        <option value="cookie-storage">Cookie Storage</option>
-        <option value="indexeddb">IndexedDB</option>
-        <option value="websql">WebSQL</option>
-      </select>
-      <span id="custom-element-area"></span>
-      <button id="btn-add">Add</button>
-    </div>
-  </div>
-  <hr>
-  <div id="delete-area">
-    <div>Delete</div>
-    <div>
-      <input type="text" id="delete-key" placeholder="Key">
-      <select name="storages" id="">
-        <option value="local-storage">Local Storage</option>
-        <option value="session-storage">Session Storage</option>
-        <option value="cookie-storage">Cookie Storage</option>
-        <option value="indexeddb">IndexedDB</option>
-        <option value="websql">WebSQL</option>
-      </select>
-      <button id="btn-delete">Delete</button>
-    </div>
-  </div>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/3.0.1/js.cookie.min.js"></script>
+  <button id="btn-add">Add / Update Data</button>
+  <button id="btn-delete">Delete Data</button>
+  <button id="btn-get">Get Data</button>
 </body>
 
 </html>

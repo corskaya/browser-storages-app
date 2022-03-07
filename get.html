@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Get Data</title>
+  <script src="get.js" defer></script>
+</head>
+
+<body>
+  <div>Get</div>
+  <div>
+    <input type="text" id="get-key" placeholder="Key">
+    <select id="get-storages">
+      <option value="local-storage">Local Storage</option>
+      <option value="session-storage">Session Storage</option>
+      <option value="cookie-storage">Cookie Storage</option>
+      <option value="indexeddb">IndexedDB</option>
+      <option value="websql">WebSQL</option>
+    </select>
+    <button id="btn-get">Get</button>
+    <div id="data-area"></div>
+    <div>
+      <button id="btn-back">Back</button>
+    </div>
+  </div>
+</body>
+
+<script src="functions.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/3.0.1/js.cookie.min.js"></script>
+
+</html>
