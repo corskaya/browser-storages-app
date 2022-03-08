@@ -2,16 +2,20 @@ const addKey = document.querySelector('#add-key')
 const value = document.querySelector('#value')
 const addStorages = document.querySelector('#add-storages')
 const btnAdd = document.querySelector('#btn-add')
-const expDateArea = document.querySelector('#expiration-date-area')
+const customElArea = document.querySelector('#custom-element-area')
 const btnBack = document.querySelector('#btn-back')
 
 addStorages.value = 'local-storage'
 
 addStorages.addEventListener('change', () => {
-  removeCustomArea(expDateArea)
+  removeCustomArea(customElArea)
 
   if (addStorages.value === 'cookie-storage') {
     renderCookieElements()
+  } else if (addStorages.value === 'indexeddb') {
+    renderIDBElements()
+  } else if (addStorages.value === 'websql') {
+    renderWebSqlElements()
   }
 })
 
