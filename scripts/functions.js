@@ -1,3 +1,5 @@
+const refresh = document.getElementById('refresh')
+
 // Resets input values
 const resetInput = (elements) => {
   elements.forEach(element => element.value = '')
@@ -41,6 +43,7 @@ const addCookie = () => {
 
 // IndexedDB
 const renderIDBElements = async () => {
+  console.log('renderIDBElements')
   customElArea.innerHTML = ''
   let currentDBLabel
   let currentDatabases
@@ -94,8 +97,10 @@ const renderIDBElements = async () => {
     createDB.textContent = 'Create'
     createNewDBContainer.appendChild(createDB)
 
-    createDB.addEventListener('click', () => {
-      createIDB(newDBName.value, version.value)
+    createDB.addEventListener('click', async () => {
+      const result = await createIDB2(newDBName.value, version.value)
+      console.log(result)
+      await renderIDBElements()
     })
   })
 
@@ -142,13 +147,14 @@ const createIDB = (dbName, dbVersion) => {
   const request = indexedDB.open(dbName, dbVersion)
 
   // on upgrade needed
-  request.onupgradeneeded = e => {
-    db = e.target.result
-  }
+  // request.onupgradeneeded = e => {
+  //   db = e.target.result
+  // }
 
   // on success
   request.onsuccess = e => {
     db = e.target.result
+    renderIDBElements()
   }
 
   // on error
@@ -156,3 +162,23 @@ const createIDB = (dbName, dbVersion) => {
     alert(`Error: ${e.target.error}`)
   }
 }
+
+const createIDB2 = (dbName, dbVersion) => new Promise((resolve, reject) => {
+  const request = indexedDB.open(dbName, dbVersion)
+
+  // request.onupgradeneeded = e => {
+  //   resolve(e.target.result)
+  //   console.log('upgrade')
+  // }
+
+  request.onsuccess = e => {
+    resolve(e.target.result)
+    console.log('success')
+  }
+
+  request.onerror = e => {
+    reject(e.target.error)
+  }
+})
+
+refresh.addEventListener('click', renderIDBElements)
