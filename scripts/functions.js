@@ -1,5 +1,5 @@
 // Resets input values
-const resetInput = (elements) => {
+const resetInput = (...elements) => {
   elements.forEach(element => element.value = '')
 }
 
@@ -41,6 +41,7 @@ const addCookie = () => {
 
 const indexedDB = window.indexedDB || window.mozIndexedDB
 let db = null
+let selectedOS = null
 
 // IndexedDB
 const renderIDBElements = async () => {
@@ -49,7 +50,6 @@ const renderIDBElements = async () => {
   let currentDatabases
 
   const databases = await indexedDB.databases()
-  console.log(databases)
 
   if (databases.length === 0) {
     const noDBMessage = document.createElement('p')
@@ -62,6 +62,12 @@ const renderIDBElements = async () => {
 
     currentDatabases = document.createElement('select')
     currentDBLabel.appendChild(currentDatabases)
+
+    const dbPlaceholderOption = document.createElement('option')
+    dbPlaceholderOption.textContent = 'Database'
+    dbPlaceholderOption.setAttribute('disabled', null)
+    dbPlaceholderOption.setAttribute('selected', null)
+    currentDatabases.appendChild(dbPlaceholderOption)
 
     databases.forEach(db => {
       const databaseOption = document.createElement('option')
@@ -99,8 +105,7 @@ const renderIDBElements = async () => {
     createNewDBContainer.appendChild(createDB)
 
     createDB.addEventListener('click', async () => {
-      const result = await createIDB(newDBName.value, version.value)
-      console.log(result)
+      await createIDB(newDBName.value, version.value)
       await renderIDBElements()
     })
   })
@@ -110,7 +115,7 @@ const renderIDBElements = async () => {
     let currentObjStores
 
     const objStoreLabel = document.createElement('label')
-    objStoreLabel.textContent = 'Object Storage: '
+    objStoreLabel.textContent = 'Object Store: '
     objStoreContainer.appendChild(objStoreLabel)
 
     if (!db || db.objectStoreNames.length === 0) {
@@ -120,6 +125,12 @@ const renderIDBElements = async () => {
     } else {
       currentObjStores = document.createElement('select')
       objStoreLabel.appendChild(currentObjStores)
+
+      const osPlaceholderOption = document.createElement('option')
+      osPlaceholderOption.textContent = 'Object Store'
+      osPlaceholderOption.setAttribute('disabled', null)
+      osPlaceholderOption.setAttribute('selected', null)
+      currentObjStores.appendChild(osPlaceholderOption)
 
       for (let i = 0; i < db.objectStoreNames.length; i++) {
         const objStoreOption = document.createElement('option')
@@ -154,10 +165,8 @@ const renderIDBElements = async () => {
       createNewOSContainer.appendChild(createOS)
 
       createOS.addEventListener('click', async () => {
-        console.log('createOS clicked1')
         await createIDB(db.name, db.version + 1, newOSName.value)
         renderOSElements()
-        console.log('createOS clicked2')
       })
     })
   }
@@ -176,15 +185,14 @@ const renderIDBElements = async () => {
   }
 }
 
+const addIndexedDB = () => {
+  createIDB(db.name, db.version, selectedOS, addKey.value, value.value)
+}
+
 const createIDB = (dbName, dbVersion, osName = null, key = null, value = null) => new Promise((resolve, reject) => {
   const request = indexedDB.open(dbName, dbVersion)
 
-  request.onversionchange = () => {
-    console.log('version change')
-  }
-
   request.onupgradeneeded = e => {
-    console.log('upgrade')
     db = e.target.result
     if (osName) {
       db.createObjectStore(osName)
@@ -192,7 +200,6 @@ const createIDB = (dbName, dbVersion, osName = null, key = null, value = null) =
   }
 
   request.onsuccess = e => {
-    console.log('success')
     db = e.target.result
     if (osName && key && value) {
       const transaction = db.transaction(osName, 'readwrite')
@@ -204,7 +211,6 @@ const createIDB = (dbName, dbVersion, osName = null, key = null, value = null) =
   }
 
   request.onerror = e => {
-    console.log('error')
     reject(e.target.error)
   }
 })

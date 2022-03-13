@@ -28,9 +28,11 @@ btnAdd.addEventListener('click', () => {
     sessionStorage.setItem(addKey.value, value.value)
   } else if (addStorages.value === 'cookie-storage') {
     addCookie()
+  } else if (addStorages.value === 'indexeddb') {
+    addIndexedDB()
   }
 
-  resetInput([addKey, value])
+  resetInput(addKey, value)
 })
 
 btnBack.addEventListener('click', () => {
