@@ -207,7 +207,7 @@ const createIDB = (dbName, dbVersion, osName = null, key = null, value = null) =
       store.add(value, key)
     }
     resolve(e.target.result)
-    // db.close()
+    db.close()
   }
 
   request.onerror = e => {
@@ -216,6 +216,7 @@ const createIDB = (dbName, dbVersion, osName = null, key = null, value = null) =
 })
 
 let selectedDBNameForDelete
+let selectedDBVersionForDelete
 let selectedOSNameForDelete
 
 const renderDeleteIDBElements = async () => {
@@ -288,15 +289,21 @@ const renderDeleteIDBElements = async () => {
 
     currentDatabases.addEventListener('change', async e => {
       selectedDBNameForDelete = e.target.value
-      const selectedDBVersion = databases.find(db => db.name === selectedDBNameForDelete).version
-      await createIDB(selectedDBNameForDelete, selectedDBVersion)
+      selectedDBVersionForDelete = databases.find(db => db.name === selectedDBNameForDelete).version
+      await createIDB(selectedDBNameForDelete, selectedDBVersionForDelete)
       renderDeleteOSElements()
     })
   }
 }
 
 const deleteIndexedDB = (key) => {
-  const request = db.transaction(selectedOSNameForDelete, 'readwrite')
-  const objectStore = request.objectStore(selectedOSNameForDelete)
-  objectStore.delete(key)
+  const request = indexedDB.open(selectedDBNameForDelete, selectedDBVersionForDelete)
+
+  request.onsuccess = e => {
+    db = e.target.result
+    const transaction = db.transaction(selectedOSNameForDelete, 'readwrite')
+    const objectStore = transaction.objectStore(selectedOSNameForDelete)
+    objectStore.delete(key)
+    db.close()
+  }
 }
