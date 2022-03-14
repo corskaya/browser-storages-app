@@ -17,7 +17,7 @@ btnGet.addEventListener('click', () => {
   if (getKey.value !== '') {
     renderData(data, dataArea)
   }
-  resetInput([getKey])
+  resetInput(getKey)
 })
 
 btnBack.addEventListener('click', () => {

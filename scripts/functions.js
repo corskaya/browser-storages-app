@@ -14,12 +14,12 @@ const renderCookieElements = () => {
   const labelForExpiration = document.createElement('label')
   labelForExpiration.textContent = 'Expiration date: '
   labelForExpiration.setAttribute('for', 'expiration')
-  customElArea.appendChild(labelForExpiration)
+  customAddArea.appendChild(labelForExpiration)
 
   const expiration = document.createElement('input')
   expiration.setAttribute('type', 'date')
   expiration.setAttribute('id', 'expiration')
-  customElArea.appendChild(expiration)
+  customAddArea.appendChild(expiration)
 }
 
 const renderData = (data, element) => {
@@ -44,8 +44,8 @@ let db = null
 let selectedOS = null
 
 // IndexedDB
-const renderIDBElements = async () => {
-  customElArea.innerHTML = ''
+const renderAddIDBElements = async () => {
+  customAddArea.innerHTML = ''
   let currentDBLabel
   let currentDatabases
 
@@ -54,11 +54,11 @@ const renderIDBElements = async () => {
   if (databases.length === 0) {
     const noDBMessage = document.createElement('p')
     noDBMessage.textContent = 'No Database Exist'
-    customElArea.appendChild(noDBMessage)
+    customAddArea.appendChild(noDBMessage)
   } else {
     currentDBLabel = document.createElement('label')
     currentDBLabel.textContent = 'Database: '
-    customElArea.appendChild(currentDBLabel)
+    customAddArea.appendChild(currentDBLabel)
 
     currentDatabases = document.createElement('select')
     currentDBLabel.appendChild(currentDatabases)
@@ -78,14 +78,14 @@ const renderIDBElements = async () => {
   }
 
   const createNewDBContainer = document.createElement('div')
-  customElArea.appendChild(createNewDBContainer)
+  customAddArea.appendChild(createNewDBContainer)
 
   const btnCreateNewDB = document.createElement('button')
   btnCreateNewDB.textContent = 'Create New Database'
   createNewDBContainer.appendChild(btnCreateNewDB)
 
   const objStoreContainer = document.createElement('div')
-  customElArea.appendChild(objStoreContainer)
+  customAddArea.appendChild(objStoreContainer)
 
   btnCreateNewDB.addEventListener('click', e => {
     createNewDBContainer.removeChild(e.target)
@@ -106,11 +106,11 @@ const renderIDBElements = async () => {
 
     createDB.addEventListener('click', async () => {
       await createIDB(newDBName.value, version.value)
-      await renderIDBElements()
+      await renderAddIDBElements()
     })
   })
 
-  const renderOSElements = () => {
+  const renderAddOSElements = () => {
     objStoreContainer.innerHTML = ''
     let currentObjStores
 
@@ -166,21 +166,21 @@ const renderIDBElements = async () => {
 
       createOS.addEventListener('click', async () => {
         await createIDB(db.name, db.version + 1, newOSName.value)
-        renderOSElements()
+        renderAddOSElements()
       })
     })
   }
 
   if (currentDatabases) {
     currentDatabases.addEventListener('change', async e => {
-      const selectedDBName = e.target.value
+      const selectedDBNameForAdd = e.target.value
       const selectedDBVersion = databases.forEach(function (db) {
-        if (db.name === selectedDBName) {
+        if (db.name === selectedDBNameForAdd) {
           return db.version
         }
       })
-      await createIDB(selectedDBName, selectedDBVersion)
-      renderOSElements()
+      await createIDB(selectedDBNameForAdd, selectedDBVersion)
+      renderAddOSElements()
     })
   }
 }
@@ -207,10 +207,96 @@ const createIDB = (dbName, dbVersion, osName = null, key = null, value = null) =
       store.add(value, key)
     }
     resolve(e.target.result)
-    db.close()
+    // db.close()
   }
 
   request.onerror = e => {
     reject(e.target.error)
   }
 })
+
+let selectedDBNameForDelete
+let selectedOSNameForDelete
+
+const renderDeleteIDBElements = async () => {
+  customDeleteArea.innerHTML = ''
+
+  const databases = await indexedDB.databases()
+
+  if (databases.length === 0) {
+    const noDBMessage = document.createElement('p')
+    noDBMessage.textContent = 'No Data Exist'
+    customDeleteArea.appendChild(noDBMessage)
+  } else {
+    currentDBLabel = document.createElement('label')
+    currentDBLabel.textContent = 'Database: '
+    customDeleteArea.appendChild(currentDBLabel)
+
+    currentDatabases = document.createElement('select')
+    currentDBLabel.appendChild(currentDatabases)
+
+    const dbPlaceholderOption = document.createElement('option')
+    dbPlaceholderOption.textContent = 'Database'
+    dbPlaceholderOption.setAttribute('disabled', null)
+    dbPlaceholderOption.setAttribute('selected', null)
+    currentDatabases.appendChild(dbPlaceholderOption)
+
+    databases.forEach(db => {
+      const databaseOption = document.createElement('option')
+      databaseOption.textContent = db.name
+      databaseOption.setAttribute('value', db.name.toLowerCase())
+      currentDatabases.appendChild(databaseOption)
+    })
+
+    const objStoreContainer = document.createElement('div')
+    customDeleteArea.appendChild(objStoreContainer)
+
+    const renderDeleteOSElements = () => {
+      objStoreContainer.innerHTML = ''
+      let currentObjStores
+
+      const objStoreLabel = document.createElement('label')
+      objStoreLabel.textContent = 'Object Store: '
+      objStoreContainer.appendChild(objStoreLabel)
+
+      if (db.objectStoreNames.length === 0) {
+        const noOSMessage = document.createElement('p')
+        noOSMessage.textContent = 'No Data Exist'
+        objStoreLabel.appendChild(noOSMessage)
+      } else {
+        currentObjStores = document.createElement('select')
+        objStoreLabel.appendChild(currentObjStores)
+
+        const osPlaceholderOption = document.createElement('option')
+        osPlaceholderOption.textContent = 'Object Store'
+        osPlaceholderOption.setAttribute('disabled', null)
+        osPlaceholderOption.setAttribute('selected', null)
+        currentObjStores.appendChild(osPlaceholderOption)
+
+        for (let i = 0; i < db.objectStoreNames.length; i++) {
+          const objStoreOption = document.createElement('option')
+          objStoreOption.textContent = db.objectStoreNames[i]
+          objStoreOption.setAttribute('value', db.objectStoreNames[i])
+          currentObjStores.appendChild(objStoreOption)
+        }
+
+        currentObjStores.addEventListener('change', e => {
+          selectedOSNameForDelete = e.target.value
+        })
+      }
+    }
+
+    currentDatabases.addEventListener('change', async e => {
+      selectedDBNameForDelete = e.target.value
+      const selectedDBVersion = databases.find(db => db.name === selectedDBNameForDelete).version
+      await createIDB(selectedDBNameForDelete, selectedDBVersion)
+      renderDeleteOSElements()
+    })
+  }
+}
+
+const deleteIndexedDB = (key) => {
+  const request = db.transaction(selectedOSNameForDelete, 'readwrite')
+  const objectStore = request.objectStore(selectedOSNameForDelete)
+  objectStore.delete(key)
+}
