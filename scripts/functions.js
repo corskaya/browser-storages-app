@@ -316,15 +316,30 @@ const getIndexedDB = (key) => new Promise((resolve, reject) => {
     const transaction = db.transaction(selectedOSNameForDelete, 'readonly')
     const objectStore = transaction.objectStore(selectedOSNameForDelete)
     const cursorRequest = objectStore.openCursor()
+    const count = objectStore.count()
+    let cursorCount = 0
+    const getCount = () => new Promise((resolve, reject) => {
+      count.onsuccess = e => {
+        result = count.result
+        resolve(result)
+      }
+    })
+
+    let result
+    getCount().then((value) => {
+      result = value
+    }).catch((e) => console.log(e))
 
     cursorRequest.onsuccess = async e => {
       const cursor = e.target.result
-
       if (cursor) {
         if (cursor.key === key) {
-          resolved = true
           resolve(cursor.value)
         } else {
+          cursorCount++
+          if (cursorCount >= result) {
+            resolve('')
+          }
           cursor.continue()
         }
       }
@@ -333,5 +348,7 @@ const getIndexedDB = (key) => new Promise((resolve, reject) => {
     cursorRequest.onerror = e => {
       reject(`An error occured: ${e}`)
     }
+
+
   }
 })

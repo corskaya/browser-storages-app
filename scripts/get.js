@@ -22,6 +22,7 @@ btnGet.addEventListener('click', async () => {
     renderData(data, dataArea)
   }
   resetInput(getKey)
+
 })
 
 getStorages.addEventListener('change', e => {
