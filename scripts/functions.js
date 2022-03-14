@@ -23,7 +23,7 @@ const renderCookieElements = () => {
 }
 
 const renderData = (data, element) => {
-  if (data === null) {
+  if (!data) {
     element.textContent = `Couldn't find the data`
   } else {
     element.textContent = data
@@ -307,3 +307,31 @@ const deleteIndexedDB = (key) => {
     db.close()
   }
 }
+
+const getIndexedDB = (key) => new Promise((resolve, reject) => {
+  const request = indexedDB.open(selectedDBNameForDelete, selectedDBVersionForDelete)
+
+  request.onsuccess = e => {
+    db = e.target.result
+    const transaction = db.transaction(selectedOSNameForDelete, 'readonly')
+    const objectStore = transaction.objectStore(selectedOSNameForDelete)
+    const cursorRequest = objectStore.openCursor()
+
+    cursorRequest.onsuccess = async e => {
+      const cursor = e.target.result
+
+      if (cursor) {
+        if (cursor.key === key) {
+          resolved = true
+          resolve(cursor.value)
+        } else {
+          cursor.continue()
+        }
+      }
+    }
+
+    cursorRequest.onerror = e => {
+      reject(`An error occured: ${e}`)
+    }
+  }
+})
