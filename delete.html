@@ -5,26 +5,39 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Delete Data</title>
+  <link rel="icon" href="images/favicon.png">
+  <link rel="stylesheet" href="styles/styles.css">
   <script src="./scripts/delete.js" defer></script>
+  <title>Storage App</title>
 </head>
 
 <body>
-  <div>Delete</div>
-  <div>
-    <input type="text" id="delete-key" placeholder="Key">
-    <select id="delete-storages">
-      <option value="local-storage">Local Storage</option>
-      <option value="session-storage">Session Storage</option>
-      <option value="cookie-storage">Cookie Storage</option>
-      <option value="indexeddb">IndexedDB</option>
-      <option value="websql">WebSQL</option>
-    </select>
+  <div class="edit-outer-container">
+    <div class="edit-inner-container">
+      <div class="header">Delete</div>
+      <div>
+        <div class="key-input-container">
+          <input type="text" id="delete-key" placeholder="Key" class="key-input">
+        </div>
+        <div class="select-container">
+          <select id="delete-storages">
+            <option value="local-storage">Local Storage</option>
+            <option value="session-storage">Session Storage</option>
+            <option value="cookie-storage">Cookie Storage</option>
+            <option value="indexeddb">IndexedDB</option>
+            <!-- <option value="websql">WebSQL</option> -->
+          </select>
+        </div>
+        <div id="custom-delete-area"></div>
+        <div class="btn-add-container">
+          <button id="btn-delete" class="btn btn-add">Delete</button>
+        </div>
+        <div>
+          <button id="btn-back" class="btn-back">&lt;Back</button>
+        </div>
+      </div>
+    </div>
   </div>
-  <div id="custom-delete-area"></div>
-  <button id="btn-delete">Delete</button>
-  <hr>
-  <button id="btn-back">Back</button>
 </body>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/3.0.1/js.cookie.min.js"></script>

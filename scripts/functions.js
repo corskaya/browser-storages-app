@@ -11,15 +11,21 @@ const removeCustomArea = (element) => {
 // Cookies
 // Renders custom elements for cookie
 const renderCookieElements = () => {
+  const expirationContainer = document.createElement('div')
+  expirationContainer.classList.add('create-new-container')
+  customAddArea.appendChild(expirationContainer)
+
   const labelForExpiration = document.createElement('label')
-  labelForExpiration.textContent = 'Expiration date: '
+  labelForExpiration.textContent = 'Expiration Date:'
   labelForExpiration.setAttribute('for', 'expiration')
-  customAddArea.appendChild(labelForExpiration)
+  labelForExpiration.setAttribute('id', 'expiration-label')
+  expirationContainer.appendChild(labelForExpiration)
 
   const expiration = document.createElement('input')
   expiration.setAttribute('type', 'date')
   expiration.setAttribute('id', 'expiration')
-  customAddArea.appendChild(expiration)
+  expiration.classList.add('key-value-input')
+  expirationContainer.appendChild(expiration)
 }
 
 const renderData = (data, element) => {
@@ -46,7 +52,7 @@ let selectedOS = null
 // IndexedDB
 const renderAddIDBElements = async () => {
   customAddArea.innerHTML = ''
-  let currentDBLabel
+  let currentDBContainer
   let currentDatabases
 
   const databases = await indexedDB.databases()
@@ -54,14 +60,15 @@ const renderAddIDBElements = async () => {
   if (databases.length === 0) {
     const noDBMessage = document.createElement('p')
     noDBMessage.textContent = 'No Database Exist'
+    noDBMessage.classList.add('no-db-message')
     customAddArea.appendChild(noDBMessage)
   } else {
-    currentDBLabel = document.createElement('label')
-    currentDBLabel.textContent = 'Database: '
-    customAddArea.appendChild(currentDBLabel)
+    currentDBContainer = document.createElement('div')
+    currentDBContainer.classList.add('custom-select-container')
+    customAddArea.appendChild(currentDBContainer)
 
     currentDatabases = document.createElement('select')
-    currentDBLabel.appendChild(currentDatabases)
+    currentDBContainer.appendChild(currentDatabases)
 
     const dbPlaceholderOption = document.createElement('option')
     dbPlaceholderOption.textContent = 'Database'
@@ -72,16 +79,19 @@ const renderAddIDBElements = async () => {
     databases.forEach(db => {
       const databaseOption = document.createElement('option')
       databaseOption.textContent = db.name
-      databaseOption.setAttribute('value', db.name.toLowerCase())
+      databaseOption.setAttribute('value', db.name)
       currentDatabases.appendChild(databaseOption)
     })
   }
 
   const createNewDBContainer = document.createElement('div')
+  createNewDBContainer.classList.add('create-new-container')
   customAddArea.appendChild(createNewDBContainer)
 
   const btnCreateNewDB = document.createElement('button')
   btnCreateNewDB.textContent = 'Create New Database'
+  btnCreateNewDB.classList.add('btn')
+  btnCreateNewDB.classList.add('create-new-btn')
   createNewDBContainer.appendChild(btnCreateNewDB)
 
   const objStoreContainer = document.createElement('div')
@@ -91,17 +101,21 @@ const renderAddIDBElements = async () => {
     createNewDBContainer.removeChild(e.target)
 
     const newDBName = document.createElement('input')
-    newDBName.setAttribute('placeholder', 'Name')
+    newDBName.setAttribute('placeholder', 'DB Name')
+    newDBName.classList.add('db-os-input')
     createNewDBContainer.appendChild(newDBName)
 
     const version = document.createElement('input')
     version.setAttribute('type', 'number')
     version.setAttribute('min', '0')
-    version.setAttribute('placeholder', 'version')
+    version.setAttribute('placeholder', 'DB Version')
+    version.classList.add('db-os-input')
     createNewDBContainer.appendChild(version)
 
     const createDB = document.createElement('button')
     createDB.textContent = 'Create'
+    createDB.classList.add('btn')
+    createDB.classList.add('btn-add')
     createNewDBContainer.appendChild(createDB)
 
     createDB.addEventListener('click', async () => {
@@ -114,17 +128,14 @@ const renderAddIDBElements = async () => {
     objStoreContainer.innerHTML = ''
     let currentObjStores
 
-    const objStoreLabel = document.createElement('label')
-    objStoreLabel.textContent = 'Object Store: '
-    objStoreContainer.appendChild(objStoreLabel)
-
     if (!db || db.objectStoreNames.length === 0) {
       const noOSMessage = document.createElement('p')
       noOSMessage.textContent = 'No Object Store Exist'
-      objStoreLabel.appendChild(noOSMessage)
+      noOSMessage.classList.add('no-db-message')
+      objStoreContainer.appendChild(noOSMessage)
     } else {
       currentObjStores = document.createElement('select')
-      objStoreLabel.appendChild(currentObjStores)
+      objStoreContainer.appendChild(currentObjStores)
 
       const osPlaceholderOption = document.createElement('option')
       osPlaceholderOption.textContent = 'Object Store'
@@ -141,10 +152,13 @@ const renderAddIDBElements = async () => {
     }
 
     const createNewOSContainer = document.createElement('div')
+    createNewOSContainer.classList.add('create-new-container')
     objStoreContainer.appendChild(createNewOSContainer)
 
     const btnCreateNewOS = document.createElement('button')
     btnCreateNewOS.textContent = 'Create New Object Store'
+    btnCreateNewOS.classList.add('btn')
+    btnCreateNewOS.classList.add('create-new-btn')
     createNewOSContainer.appendChild(btnCreateNewOS)
 
     if (currentObjStores) {
@@ -157,11 +171,14 @@ const renderAddIDBElements = async () => {
       createNewOSContainer.removeChild(e.target)
 
       const newOSName = document.createElement('input')
-      newOSName.setAttribute('placeholder', 'Name')
+      newOSName.setAttribute('placeholder', 'Object Store Name')
+      newOSName.classList.add('db-os-input')
       createNewOSContainer.appendChild(newOSName)
 
       const createOS = document.createElement('button')
       createOS.textContent = 'Create'
+      createOS.classList.add('btn')
+      createOS.classList.add('btn-add')
       createNewOSContainer.appendChild(createOS)
 
       createOS.addEventListener('click', async () => {
@@ -226,15 +243,16 @@ const renderDeleteIDBElements = async () => {
 
   if (databases.length === 0) {
     const noDBMessage = document.createElement('p')
-    noDBMessage.textContent = 'No Data Exist'
+    noDBMessage.textContent = 'No Database Exist'
+    noDBMessage.classList.add('no-db-message')
     customDeleteArea.appendChild(noDBMessage)
   } else {
-    currentDBLabel = document.createElement('label')
-    currentDBLabel.textContent = 'Database: '
-    customDeleteArea.appendChild(currentDBLabel)
+    const currentDBContainer = document.createElement('div')
+    currentDBContainer.classList.add('custom-select-container')
+    customDeleteArea.appendChild(currentDBContainer)
 
     currentDatabases = document.createElement('select')
-    currentDBLabel.appendChild(currentDatabases)
+    currentDBContainer.appendChild(currentDatabases)
 
     const dbPlaceholderOption = document.createElement('option')
     dbPlaceholderOption.textContent = 'Database'
@@ -245,28 +263,26 @@ const renderDeleteIDBElements = async () => {
     databases.forEach(db => {
       const databaseOption = document.createElement('option')
       databaseOption.textContent = db.name
-      databaseOption.setAttribute('value', db.name.toLowerCase())
+      databaseOption.setAttribute('value', db.name)
       currentDatabases.appendChild(databaseOption)
     })
 
     const objStoreContainer = document.createElement('div')
+    objStoreContainer.classList.add('select-container')
     customDeleteArea.appendChild(objStoreContainer)
 
     const renderDeleteOSElements = () => {
       objStoreContainer.innerHTML = ''
       let currentObjStores
 
-      const objStoreLabel = document.createElement('label')
-      objStoreLabel.textContent = 'Object Store: '
-      objStoreContainer.appendChild(objStoreLabel)
-
       if (db.objectStoreNames.length === 0) {
         const noOSMessage = document.createElement('p')
-        noOSMessage.textContent = 'No Data Exist'
-        objStoreLabel.appendChild(noOSMessage)
+        noOSMessage.textContent = 'No Object Store Exist'
+        noOSMessage.classList.add('no-db-message')
+        objStoreContainer.appendChild(noOSMessage)
       } else {
         currentObjStores = document.createElement('select')
-        objStoreLabel.appendChild(currentObjStores)
+        objStoreContainer.appendChild(currentObjStores)
 
         const osPlaceholderOption = document.createElement('option')
         osPlaceholderOption.textContent = 'Object Store'
@@ -319,7 +335,7 @@ const getIndexedDB = (key) => new Promise((resolve, reject) => {
     const count = objectStore.count()
     let cursorCount = 0
     const getCount = () => new Promise((resolve, reject) => {
-      count.onsuccess = e => {
+      count.onsuccess = () => {
         result = count.result
         resolve(result)
       }
@@ -348,7 +364,5 @@ const getIndexedDB = (key) => new Promise((resolve, reject) => {
     cursorRequest.onerror = e => {
       reject(`An error occured: ${e}`)
     }
-
-
   }
 })

@@ -5,14 +5,23 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="images/favicon.png">
+  <link rel="stylesheet" href="styles/styles.css">
   <script src="./scripts/index.js" defer></script>
   <title>Storage App</title>
 </head>
 
 <body>
-  <button id="btn-add">Add / Update Data</button>
-  <button id="btn-delete">Delete Data</button>
-  <button id="btn-get">Get Data</button>
+  <div id="index-outer-container">
+    <div id="index-inner-container">
+      <div id="db-icon-container">
+        <img src="images/db.png" alt="database_icon" id="db-icon">
+      </div>
+      <button id="btn-add" class="btn btn-index-page">Add / Update Data</button>
+      <button id="btn-delete" class="btn btn-index-page">Delete Data</button>
+      <button id="btn-get" class="btn btn-index-page">Get Data</button>
+    </div>
+  </div>
 </body>
 
 </html>

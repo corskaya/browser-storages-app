@@ -1,0 +1,202 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+
+:root {
+  --dark-color-a: #0d1117;
+  --dark-color-b: #161b22;
+  --light-color: #c9d1d9;
+  --blue-color: #1882FF;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  font-family: 'Roboto', sans-serif;
+  background-color: var(--dark-color-a);
+}
+
+#index-outer-container {
+  display:flex;
+  justify-content: center;
+}
+
+#index-inner-container {
+  margin-top: 80px;
+}
+
+.btn {
+  background-color: var(--dark-color-b);
+  color: var(--light-color);
+  border: 1px solid var(--light-color);
+}
+
+.btn:hover {
+  cursor: pointer;
+  background-color: var(--dark-color-a);
+}
+
+.btn-index-page {
+  display: block;
+  width: 400px;
+  height: 90px;
+  margin: 15px;
+  font-size: 25px;
+  border-radius: 15px;
+}
+
+#db-icon-container {
+  display: flex;
+  justify-content: center;
+}
+
+#db-icon {
+  width: 180px;
+  height: 180px;
+}
+
+.header {
+  font-size: 35px;
+  color: var(--light-color);
+  text-align: center;
+}
+
+input {
+  border: 1px solid var(--light-color);
+  border-radius: 3px;
+  color: var(--light-color);
+  padding-inline-start: 10px;
+  font-size: 16px;
+}
+
+#expiration-label {
+  margin: 12px 15px 0 0;
+  color: var(--light-color)
+}
+
+.key-value-input {
+  width: 47%;
+  height: 40px;
+}
+
+.key-input {
+  width: 100%;
+  height: 40px;
+}
+
+.db-os-input {
+  width: 33%;
+  margin-inline-end: 10px;
+}
+
+::-webkit-input-placeholder {
+  font-size: 14px;
+}
+
+select {
+  width: 100%;
+  height: 42px;
+  border: 1px solid var(--light-color);
+  border-radius: 3px;
+  font-size: 18px;
+  color: var(--light-color);
+  text-align: center;
+  background-color: var(--dark-color-b);
+}
+
+select:hover {
+  cursor: pointer;
+}
+
+.edit-outer-container {
+  display: flex;
+  justify-content: center;
+}
+
+.edit-inner-container {
+  margin-top: 40px;
+  width: 600px;
+}
+
+.input-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 40px;
+}
+
+.key-input-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 40px;
+}
+
+.select-container {
+  margin-top: 25px;
+}
+
+.custom-select-container {
+  margin-top: 25px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.create-new-container {
+  margin: 25px;
+  display: flex;
+  justify-content: center;
+}
+
+.no-db-message {
+  color: var(--light-color);
+  text-align: center;
+  margin-top: 25px;
+}
+
+.create-new-btn {
+  background-color: var(--light-color);
+  color: var(--dark-color-a);
+  width: 40%;
+  height: 35px;
+  border-radius: 3px;
+  font-size: 15px;
+}
+
+.create-new-btn:hover {
+  background-color: var(--dark-color-a);
+  color: var(--light-color)
+}
+
+.btn-add-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 25px;
+}
+
+.btn-add {
+  background-color: var(--light-color);
+  color: var(--dark-color-a);
+  width: 20%;
+  height: 35px;
+  border-radius: 3px;
+  font-size: 15px;
+}
+
+.btn-add:hover {
+  background-color: var(--dark-color-a);
+  color: var(--light-color)
+}
+
+.btn-back {
+  border: none;
+  font-size: 15px;
+  color: var(--light-color);
+  cursor: pointer;
+  margin-top: 15px;
+}
+
+#data-area {
+  margin-top: 15px;
+  color: var(--light-color);
+  text-align: center;
+}
